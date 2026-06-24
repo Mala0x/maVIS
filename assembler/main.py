@@ -18,6 +18,10 @@ def grabInstruction(sourceFile):
 
     # All these mappings are defined in the spec (../docs/specification.md)
 
+    # Maybe add something so I know how many arguments every instruction takes, maybe every instruction should have at least 2 items
+    # index 0: opcode, index 1: how many args but that seems like boilerplate because i can do len(list), mhmmm...
+    # This is a good thinking exercise it seems
+
     instructionDict = { # This makes the instructions in the python part super modulair and flexible
         "NOP": [0x00],
         "JMP": [0x01, "ADDR"],
@@ -44,7 +48,7 @@ def grabInstruction(sourceFile):
     for items in sourceFile:
         tempThing = items.split(" ")
         if tempThing[0] in instructionDict:
-            print(hex(instructionDict[tempThing[0]]))
+            print("hello, world!")
 
 if __name__ == "__main__":
     try:
