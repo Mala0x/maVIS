@@ -14,6 +14,22 @@ def readFile(fileName):
     except OSError:
         print("File not found!")
 
+# These are some yet to be realised functions for the different instructions to call into after the parsing stage
+def __NOP_INSTRUCTION():
+    return
+
+def __JMP_INSTRUCTION():
+    return
+
+def __JE_INSTRUCTION():
+    return
+
+def __MOV_INSTRUCTION():
+    return
+
+def __ADD_INSTRUCTION():
+    return
+
 def grabInstruction(sourceFile):
 
     # All these mappings are defined in the spec (../docs/specification.md)
@@ -48,7 +64,23 @@ def grabInstruction(sourceFile):
     for items in sourceFile:
         tempThing = items.split(" ")
         if tempThing[0] in instructionDict:
-            print("hello, world!")
+            print(f"Instruction: {tempThing[0]}, argument amount: {len(instructionDict[tempThing[0]])-1}")
+            for idx, items in enumerate(instructionDict[tempThing[0]][1:]):
+                if items == "ADDR":
+                    print(f"This argument was an address: {tempThing[idx+1]}")
+                elif items == "REG":
+                    print(f"This argument was a register: {tempThing[idx+1]}")
+                elif items == "REG_OR_IMM":
+                    if tempThing[idx+1] in registerDict:
+                        print(f"This argument was REG_OR_IMM and this seems to be an REG {tempThing[idx+1]} (addr): {registerDict[tempThing[idx+1]]}")
+                    else:
+                        print(f"This argument was REG_OR_IMM and this seems to be a IMM {tempThing[idx+1]}")
+                elif items == "IMM":
+                    print(f"This argument was an IMM: {tempThing[idx+1]}")
+                else:
+                    print(f"You made a mistake in the code! Something whent wrong with this {tempThing[idx+1]}")
+                
+                #this ugly if else block will become a switch statement when i figure out how the core logic works
 
 if __name__ == "__main__":
     try:
