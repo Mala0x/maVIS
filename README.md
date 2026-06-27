@@ -1,8 +1,8 @@
 # maVIS
 
 ## What does the title mean?
-ma = **ma**la0x;
-V = virtual for virtual machine
+ma = **ma**la0x; <br>
+V = virtual for virtual machine <br>
 IS = instruction set for the custom instruction set I will be writing for my own machine
 
 ## Why do this?
