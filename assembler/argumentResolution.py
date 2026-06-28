@@ -17,14 +17,14 @@ registerDict = {
 }
 
 # Argument resolution functions that are yet to be made 
-def __ADDR_RESOLUTION(ADDR):
+def __ADDR_RESOLUTION(ADDR): # Check if the given addr is in between the legal lines otherwise give an error
+    return 
+
+def __REG_RESOLUTION(REG): # Check if the register is a valid register otherwise give an error
     return
 
-def __REG_RESOLUTION(REG):
+def __IMM_RESOLUTION(IMM): # Numbers are 16 bit so check if this is right, maybe check for overflow, signed or unsigned that kinda stuff
     return
 
-def __IMM_RESOLUTION(IMM):
-    return
-
-def __REG_OR_IMM_RESOLUTION(REG_OR_IMM):
+def __REG_OR_IMM_RESOLUTION(REG_OR_IMM): # Check if it is reg or IMM and then pass onto the function for that type
     return
