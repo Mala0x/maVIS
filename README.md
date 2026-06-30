@@ -15,4 +15,12 @@ I try to keep it to the bare minimum, I sometimes use it when completely stuck a
 I know I am not the best at c++ or python or maybe even my own instruction set but shhhh. I am learning :)
 
 ## Current roadmap
-My main roadmap visualisation tool will be the github issue tracker.
+This is the most global roadmap imaginable and is NOT a trustworthy source of any sort of order I am doing work in.
+
+- [ ] Make the c++ virtual machine work with the basic first few instructions
+- [ ] Make the specification better and more reflective of what I am actually doing
+- [ ] Maybe spin up some github pages docs enviroment for better documentation of the instruction set + the virtual machine
+- [ ] Get a program to print something to the console
+- [ ] **Maybe** rewrite the python assembler to rust (because I want to learn rust and why not)
+- [ ] Make my own intermediate language (take llvmir as an example)
+- [ ] Make my own higher level language (should be cool)
