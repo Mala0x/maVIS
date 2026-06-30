@@ -8,22 +8,22 @@
 
 std::optional<std::fstream> openFile(std::string fileName) {
 
-    std::fstream mabinFile;
+    std::fstream maBinFile;
 
     try {
-        mabinFile.open(fileName, std::ios::in | std::ios::binary);
+        maBinFile.open(fileName, std::ios::in | std::ios::binary);
     } catch(std::exception e) {
         std::cout << e.what() << std::endl;
         return {};
     }
 
-    return mabinFile;
+    return maBinFile;
 }
 
-size_t getFileSize(std::fstream& mabinFile) {
-    mabinFile.seekg(0, std::ios::end);
-    size_t fileSize = mabinFile.tellg();
-    mabinFile.seekg(0, std::ios::beg);
+size_t getFileSize(std::fstream& maBinFile) {
+    maBinFile.seekg(0, std::ios::end);
+    size_t fileSize = maBinFile.tellg();
+    maBinFile.seekg(0, std::ios::beg);
     return fileSize;
 }
 
@@ -47,21 +47,21 @@ int main(int argc, char* argv[]) {
 
     auto fileOptional = openFile(inputFile);
 
-    std::fstream mabinFile;
+    std::fstream maBinFile;
 
     if (!fileOptional.has_value()) {
         std::printf("Something has gone wrong in the opening of te file! Quitting \n");
         return -1;
     } else {
-        mabinFile = std::move(fileOptional.value());
+        maBinFile = std::move(fileOptional.value());
     }
 
-    size_t fileSize = getFileSize(mabinFile);
+    size_t fileSize = getFileSize(maBinFile);
 
     std::vector<uint8_t> flashMemory;
 
     for (size_t i = 0; i < fileSize; ++i) {
-        flashMemory.emplace_back(mabinFile.get());
+        flashMemory.emplace_back(maBinFile.get());
     }
 
     while (pc < fileSize) {
