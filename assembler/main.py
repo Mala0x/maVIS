@@ -28,21 +28,26 @@ def grabInstruction(sourceFile):
 
     sourceFile = sourceFile.replace(",", "").split("\n")
 
+    try:
+        outputFile = open("bin.mabin", "wb")
+    except OSError:
+        print("I cannot make the output bin file :(")
+
     # This should be done so much better if i say writing code is art this is fucking ugly
 
     for items in sourceFile:
         tempThing = items.split(" ")
         if tempThing[0] in instructionFuncs.instructionDict:
-            print(hex(instructionFuncs.instructionDict[tempThing[0]][0]))
+            outputFile.write(instructionFuncs.instructionDict[tempThing[0]][0].to_bytes())
             for idx, items in enumerate(instructionFuncs.instructionDict[tempThing[0]][1:]):
                 if items == "ADDR":
-                    print(argumentResolution.__ADDR_RESOLUTION(tempThing[idx+1]))
+                    outputFile.write(argumentResolution.__ADDR_RESOLUTION(tempThing[idx+1]))
                 elif items == "REG":
-                    print(argumentResolution.__REG_RESOLUTION(tempThing[idx+1]))
+                    outputFile.write(argumentResolution.__REG_RESOLUTION(tempThing[idx+1]))
                 elif items == "REG_OR_IMM":
-                    print(argumentResolution.__REG_OR_IMM_RESOLUTION(tempThing[idx+1]))
+                    outputFile.write(argumentResolution.__REG_OR_IMM_RESOLUTION(tempThing[idx+1]))
                 elif items == "IMM":
-                    print(argumentResolution.__IMM_RESOLUTION(tempThing[idx+1]))
+                    outputFile.write(argumentResolution.__IMM_RESOLUTION(tempThing[idx+1]))
                 else:
                     print(f"You made a mistake in the code! Something whent wrong with this {tempThing[idx+1]}")
                 

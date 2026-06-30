@@ -1,3 +1,5 @@
+import struct
+
 if __name__ == "__main__":
     print("This program is not made to be run like a standalone program!")
 
@@ -18,20 +20,19 @@ registerDict = {
 
 # Argument resolution functions that are yet to be made 
 def __ADDR_RESOLUTION(ADDR): # Check if the given addr is in between the legal lines otherwise give an error
-
     try:
         ADDR = int(ADDR, 16)
     except:
         print("This did not work! addr to int")
 
     if ADDR >= 0x0 and ADDR <= 0xFFFF:
-        return hex(int(ADDR))
+        return struct.pack('>h' , ADDR)
     else:
         print("This does not work! addr to big")
 
 def __REG_RESOLUTION(REG): # Check if the register is a valid register otherwise give an error
     if REG in registerDict:
-        return hex(registerDict[REG])
+        return registerDict[REG].to_bytes()
     else:
         print("This does not work! reg")
 
@@ -43,7 +44,7 @@ def __IMM_RESOLUTION(IMM): # Numbers are 16 bit so check if this is right, maybe
         print("This IMM couldnt be converted to int")
 
     if IMM > -0x8000 and IMM < 0x7FFF:
-        return IMM
+        return struct.pack('>h', IMM)
     else:
         print("This does not work maybe overflow maybe error maybe do something else! IMM")
 
