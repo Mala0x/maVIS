@@ -22,30 +22,32 @@ def grabInstruction(sourceFile):
 
     # All these mappings are defined in the spec (../docs/specification.md)
 
-    # Maybe add something so I know how many arguments every instruction takes, maybe every instruction should have at least 2 items
+    # Maybe ADDR something so I know how many arguments every instruction takes, maybe every instruction should have at least 2 items
     # index 0: opcode, index 1: how many args but that seems like boilerplate because i can do len(list), mhmmm...
     # This is a good thinking exercise it seems
 
     sourceFile = sourceFile.replace(",", "").split("\n")
+
+    try:
+        outputFile = open("bin.mabin", "wb")
+    except OSError:
+        print("I cannot make the output bin file :(")
 
     # This should be done so much better if i say writing code is art this is fucking ugly
 
     for items in sourceFile:
         tempThing = items.split(" ")
         if tempThing[0] in instructionFuncs.instructionDict:
-            print(f"Instruction: {tempThing[0]}, argument amount: {len(instructionFuncs.instructionDict[tempThing[0]])-1}")
+            outputFile.write(instructionFuncs.instructionDict[tempThing[0]][0].to_bytes())
             for idx, items in enumerate(instructionFuncs.instructionDict[tempThing[0]][1:]):
                 if items == "ADDR":
-                    print(f"This argument was an address: {tempThing[idx+1]}")
+                    outputFile.write(argumentResolution.__ADDR_RESOLUTION(tempThing[idx+1]))
                 elif items == "REG":
-                    print(f"This argument was a register: {tempThing[idx+1]}")
+                    outputFile.write(argumentResolution.__REG_RESOLUTION(tempThing[idx+1]))
                 elif items == "REG_OR_IMM":
-                    if tempThing[idx+1] in argumentResolution.registerDict:
-                        print(f"This argument was REG_OR_IMM and this seems to be an REG {tempThing[idx+1]} (addr): {hex(argumentResolution.registerDict[tempThing[idx+1]])}")
-                    else:
-                        print(f"This argument was REG_OR_IMM and this seems to be a IMM {tempThing[idx+1]}")
+                    outputFile.write(argumentResolution.__REG_OR_IMM_RESOLUTION(tempThing[idx+1]))
                 elif items == "IMM":
-                    print(f"This argument was an IMM: {tempThing[idx+1]}")
+                    outputFile.write(argumentResolution.__IMM_RESOLUTION(tempThing[idx+1]))
                 else:
                     print(f"You made a mistake in the code! Something whent wrong with this {tempThing[idx+1]}")
                 

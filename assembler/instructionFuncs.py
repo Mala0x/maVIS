@@ -10,19 +10,3 @@ instructionDict = { # This makes the instructions in the python part super modul
     "MOV": [0x03, "REG", "REG_OR_IMM"],
     "ADD": [0x04, "REG", "REG_OR_IMM"],
 }
-
-# These are some yet to be realised functions for the different instructions to call into after the parsing stage
-def __NOP_INSTRUCTION():
-    return
-
-def __JMP_INSTRUCTION():
-    return
-
-def __JE_INSTRUCTION():
-    return
-
-def __MOV_INSTRUCTION():
-    return
-
-def __ADD_INSTRUCTION():
-    return

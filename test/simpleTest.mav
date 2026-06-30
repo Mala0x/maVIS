@@ -1,5 +1,5 @@
 NOP
-JMP 0xdeadbeef
-JE 0xdeadbeef 
+JMP 0x0F
+JE 0x0A 
 MOV R0, 5
 ADD R1, R0

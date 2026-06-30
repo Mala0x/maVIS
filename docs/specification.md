@@ -18,4 +18,4 @@
 * JMP -> 0x01: jumps to another memory adress (arg0: ADDR)
 * JE -> 0x02: jumps if zero flag is set to true (arg0: ADRR)
 * MOV -> 0x03: moves arg1 into register arg0 (arg0: REG, arg1: REG_OR_IMM)
-* ADD -> 0x04: adds arg1 to register arg0 (arg0: REG, arg1: REG_OR_IMM)
+* ADDR -> 0x04: adds arg1 to register arg0 (arg0: REG, arg1: REG_OR_IMM)
