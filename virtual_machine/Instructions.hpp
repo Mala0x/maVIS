@@ -1,8 +1,15 @@
 #pragma once
+#include <cstddef>
+#include <cstdint>
+#include <vector>
+#include <cstdio>
 
-class Instructions {
-    private:
+namespace mavis::instructions {
 
-    public:
-        
-};
+    void nop(size_t& pc);
+    void jmp(size_t& pc, std::vector<uint8_t>& program);
+    void je(size_t& pc, std::vector<uint8_t>& program);
+    void mov(size_t& pc, std::vector<uint8_t>& program);
+    void add(size_t& pc, std::vector<uint8_t>& program);
+
+}
