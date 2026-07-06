@@ -53,6 +53,9 @@ int main(int argc, char* argv[]) {
 
     std::vector<uint8_t> flashMemory;
 
+    std::array<uint8_t, 0xFF> registers;
+    registers.fill(0);
+
     for (size_t i = 0; i < fileSize; ++i) {
         flashMemory.emplace_back(maBinFile.get());
     }
@@ -66,8 +69,7 @@ int main(int argc, char* argv[]) {
                 mavis::instructions::jmp(pc, flashMemory);
                 break;
             case 0x02:
-                std::println("JE has been called!\n");
-                pc += 3;
+                mavis::instructions::je(pc, flashMemory, registers);
                 break;
             case 0x03:
                 std::println("MOV has been called!\n");
