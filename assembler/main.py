@@ -37,13 +37,15 @@ def grabInstruction(sourceFile):
 
     lineCount = 0 # This is so if there is an error I can say what line the error is on
 
+    fileWriter = instructionFuncs.binFileWriter(outputBinFile=outputFile)
+
     for items in sourceFile:
         tempThing = items.split(" ")
         lineCount += 1
-        if tempThing[0] in instructionFuncs.instructionDict:
-            instructionFuncs.instructionDict[tempThing[0]][1] # Functions inside arrays is possible (it is fucking cursed) but it makes this so nice to the eyes
+        if tempThing[0] in fileWriter.instructionDict:
+            fileWriter.instructionDict[tempThing[0]][1] # Functions inside arrays is possible (it is fucking cursed) but it makes this so nice to the eyes
         elif tempThing[0] == "\0" or tempThing[0] == "\n" or tempThing[0] == "":
-            print(f"Found a newline or a null terminator? Wattafak line: {lineCount}")
+            print(f"Found a newline or a null terminator? Wattafak (I should ignore this and not give an error but it is fun) line: {lineCount}")
         else:
             print(f"You made a mistake in the code! Something whent wrong with this line: {lineCount}")
 

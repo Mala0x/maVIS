@@ -3,25 +3,39 @@ if __name__ == "__main__":
 
 # Global variable definition
 
-def nop():
-    print("nop")
-    
-def jmp():
-    print("jmp")
-    
-def je():
-    print("je")
+import io
 
-def mov():
-    print("mov")
+class binFileWriter:
     
-def add():
-    print("add")
+    # Add the source file here so that we can grab what IMM or ADDR or something the user wants to go to
+    
+    outputBinFile: io.BufferedWriter = None
+    
+    def __init__(self, outputBinFile):
+        self.outputBinFile = outputBinFile
+    
+    def nop(self):
+        print("nop")
+        self.outputBinFile.write(b'\x00')
+
+    def jmp(self):
+        print("jmp")
+        return 0x01
+
+    def je(self):
+        print("je")
+        return 0x02
+
+    def mov(self):
+        print("mov")
+        return 0x03
+
+    def add(self):
+        print("add")
+        return 0x05
+
+# Ofc make the dict reflect everything I have and update the main function to use this choice
 
 instructionDict = { # This makes the instructions in the python part super modulair and flexible
-    "NOP": [0x00, nop()],
-    "JMP": [0x01, jmp(),"ADDR"],
-    "JE": [0x02, je(),"ADDR"],
-    "MOV": [0x03, mov(),"REG", "REG_OR_IMM"],
-    "ADD": [0x04, add(),"REG", "REG_OR_IMM"],
+    "NOP": {"opcode": 0x00, "handler": binFileWriter.nop, "args": []}
 }
