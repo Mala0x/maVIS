@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
 
     std::vector<uint8_t> flashMemory;
 
-    std::array<uint8_t, 0xFF> registers;
+    std::array<uint16_t, 0xFF> registers;
     registers.fill(0);
 
     for (size_t i = 0; i < fileSize; ++i) {
