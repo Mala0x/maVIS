@@ -4,7 +4,7 @@
 import sys
 
 # Local imports
-import instructionFuncs, argumentResolution
+import instructionFuncs
 
 def readFile(fileName):
 
@@ -33,18 +33,19 @@ def grabInstruction(sourceFile):
     except OSError:
         print("I cannot make the output bin file :(")
 
-    # This should be done so much better if i say writing code is art this is fucking ugly
-
     lineCount = 0 # This is so if there is an error I can say what line the error is on
 
-    fileWriter = instructionFuncs.binFileWriter(outputBinFile=outputFile)
+    fileHandler = instructionFuncs.binFileWriter(outputBinFile=outputFile)
 
     for items in sourceFile:
-        tempThing = items.split(" ")
+        splitLines = items.split(" ")
         lineCount += 1
-        if tempThing[0] in fileWriter.instructionDict:
-            fileWriter.instructionDict[tempThing[0]][1] # Functions inside arrays is possible (it is fucking cursed) but it makes this so nice to the eyes
-        elif tempThing[0] == "\0" or tempThing[0] == "\n" or tempThing[0] == "":
+        if splitLines[0] in fileHandler.instructionDict:
+            if len(fileHandler.instructionDict[splitLines[0]]["args"]) == 0:
+                fileHandler.instructionDict[splitLines[0]]["handler"]()
+            else:
+                fileHandler.instructionDict[splitLines[0]]["handler"](splitLines[1:])
+        elif splitLines[0] == "\0" or splitLines[0] == "\n" or splitLines[0] == "":
             print(f"Found a newline or a null terminator? Wattafak (I should ignore this and not give an error but it is fun) line: {lineCount}")
         else:
             print(f"You made a mistake in the code! Something whent wrong with this line: {lineCount}")
