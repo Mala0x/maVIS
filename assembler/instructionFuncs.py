@@ -1,19 +1,24 @@
 if __name__ == "__main__":
-    print("This program is not made to be run like a standalone program!")
+    print("This program is not made to be ran like a standalone program!")
 
 # Global variable definition
 
 import io, struct, argumentResolution
 
+'''
+The biggest thing missing in my opinion from this setup is the error handling.
+I want to make this assembler as robust and verbose as possible so it is actually 'nice' to work in this language of mine
+I do not want the user to kinda guess what went wrong, sometimes this is needed but I do not want that
+This should also be reflected in the virtual_machine/runtime when possible make the errors as verbose as possible
+'''
+
 class binFileWriter:
     
-    # Add the source file here so that we can grab what IMM or ADDR or something the user wants to go to
+    # Add the source file here so that we can grab what IMM or ADDR or something the user wants to go to and to write to it simply and abstractly
     
     outputBinFile: io.BufferedWriter = None
 
     instructionDict = None
-    
-    # The functions themselves return something, tho if a function has to decide which of its opcodes it should return it hands this over to another helper function
 
     def __init__(self, outputBinFile):
         self.outputBinFile = outputBinFile
@@ -34,15 +39,15 @@ class binFileWriter:
 
     def __write_to_file(self, argument): # Really simple helper function to 1. DRY and 2. it makes writing the hexcodes nicer because no constant b'\x00'
         
-        if (type(argument) is type('string')):
+        if isinstance(argument, str): # This is to check if the types are the same, I could not find any way to do it nicer then just use a string, int and a bytes object :shrug:
             self.outputBinFile.write((int(argument, 16)).to_bytes())
-        elif (type(argument) is type(10)):
+        elif isinstance(argument, int):
             self.outputBinFile.write(argument.to_bytes())
-        elif (type(argument) is type(b'\00')):
+        elif isinstance(argument, bytes):
             self.outputBinFile.write(argument)
         else:
             print("An argument passed into the file writer function was neither an int nor a string. Mhmm... should not happen I think")
-        self.outputBinFile.flush()
+        self.outputBinFile.flush() # Flushing the buffer everytime might not be the strat when parsing bigger files... Gotta think about that one in a later version
 
     def __bytepack_imm(self, imm): # This helper function just checks if the IMM is in limits and if it is it bytepacks it so that it actually is a 16 bit mem number instead of 8 bits when < 255
         imm = int(imm)
@@ -91,4 +96,4 @@ class binFileWriter:
         elif self.__reg_or_imm(argList[1]) == 'IMM':
             self.__write_to_file(0x06)
             self.__write_to_file(argumentResolution.registerDict[argList[0]])
-            self.__write_to_file(self.__bytepack_imm(argList[1]))
+            self.__write_to_file(self.__bytepack_imm(argList[1]))   
