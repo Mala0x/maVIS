@@ -21,6 +21,8 @@
 * MOV IMM -> 0x04: Another opcode for the imm version
 * ADD REG -> 0x05: adds arg1 to register arg0 (arg0: REG, arg1: REG_OR_IMM)
 * ADD IMM -> 0x06: Another opcode for the imm version
+* CMP REG -> 0x07: compares a register to another register (arg0: REG, arg1 REG_OR_IMM)
+* CMP IMM -> 0x08: Another opcode for the imm version
 
 ## Stuff that should be catched at compile time
 * Basic integer overflow things

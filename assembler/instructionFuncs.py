@@ -28,7 +28,8 @@ class binFileWriter:
             "JMP": {"handler": self.jmp, "args": ["ADDR"]},
             "JE": {"handler": self.je, "args": ["ADDR"]},
             "MOV": {"handler": self.mov, "args": ["REG", "REG_OR_IMM"]},
-            "ADD": {"handler": self.add, "args": ["REG", "REG_OR_IMM"]}
+            "ADD": {"handler": self.add, "args": ["REG", "REG_OR_IMM"]},
+            "CMP": {"handler": self.cmp, "args": ["REG", "REG_OR_IMM"]}
         }
 
     def __reg_or_imm(self, reg_or_imm):
@@ -67,7 +68,7 @@ class binFileWriter:
     def jmp(self, argList):
         print(f"jmp, argList: {argList}")
         self.__write_to_file(0x01)
-        self.__write_to_file(argList[0])
+        self.__write_to_file(self.__bytepack_imm(argList[0]))
 
     def je(self, argList):
         print(f"je, argList: {argList}")
@@ -96,4 +97,15 @@ class binFileWriter:
         elif self.__reg_or_imm(argList[1]) == 'IMM':
             self.__write_to_file(0x06)
             self.__write_to_file(argumentResolution.registerDict[argList[0]])
-            self.__write_to_file(self.__bytepack_imm(argList[1]))   
+            self.__write_to_file(self.__bytepack_imm(argList[1]))
+
+    def cmp(self, argList):
+        print(f"cmp, argList: {argList}")
+        if self.__reg_or_imm(argList[1]) == 'REG':
+            self.__write_to_file(0x07)
+            self.__write_to_file(argumentResolution.registerDict[argList[0]])
+            self.__write_to_file(argumentResolution.registerDict[argList[1]])
+        elif self.__reg_or_imm(argList[1]) == 'IMM':
+            self.__write_to_file(0x08)
+            self.__write_to_file(argumentResolution.registerDict[argList[0]])
+            self.__write_to_file(self.__bytepack_imm(argList[1]))

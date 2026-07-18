@@ -1,0 +1,5 @@
+mov R1, 10
+CMP R0, 10
+JE 0x08
+ADD R0, 1
+JMP 0x04
