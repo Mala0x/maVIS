@@ -1,10 +1,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include <ctime>
 #include <fstream>
-#include <optional>
-#include <variant>
 #include <vector>
 #include <print>
 #include <chrono>
@@ -13,9 +10,9 @@
 
 // --- All my own hpp's are there because I want to use them in the future, first get the basics working here and then port them over for better modularity --- //
 
-size_t pc = 0;
+size_t pc = 0; // This is the program counter AKA the pointer into memory where we are atm
 
-bool verbose_mode_set = false;
+bool verbose_mode_set = false; // This defaults to false because no one wants to be logging at default (I think atleast)
 
 int main(int argc, char* argv[]) {
 
@@ -33,21 +30,13 @@ int main(int argc, char* argv[]) {
 
     size_t fileExtension = inputFile.find(".mabin");
 
-    if (fileExtension == std::variant_npos) {
-        std::println("Your file is not in the correct format <filename>.mabin is expected! Quitting \n");
-        return -1;
-    }
+    mavis::fileHandler::isFileCorrectFormat(fileExtension);
 
     auto fileOptional = mavis::fileHandler::openFile(inputFile);
 
     std::fstream maBinFile;
 
-    if (!fileOptional.has_value()) {
-        std::println("Something has gone wrong in the opening of te file! Quitting \n");
-        return -1;
-    } else {
-        maBinFile = std::move(fileOptional.value());
-    }
+    mavis::fileHandler::isFileValid(fileOptional, maBinFile);
 
     size_t fileSize = mavis::fileHandler::getFileSize(maBinFile);
 
@@ -59,6 +48,8 @@ int main(int argc, char* argv[]) {
     for (size_t i = 0; i < fileSize; ++i) {
         flashMemory.emplace_back(maBinFile.get());
     }
+
+    auto time_at_beginning_program = std::chrono::system_clock::now();
 
     while (pc < fileSize) {
         switch (flashMemory.at(pc)) {
@@ -72,15 +63,22 @@ int main(int argc, char* argv[]) {
                 mavis::instructions::je(pc, flashMemory, registers);
                 break;
             case 0x03:
-                std::println("MOV has been called!\n");
-                pc += 4; // This is ofc depending on if its a reg or IMM but I would check that in the function itself
+                mavis::instructions::mov_reg(pc, flashMemory, registers);
                 break;
             case 0x04:
-                std::println("ADD has been called!\n");
-                pc += 5;
+                mavis::instructions::mov_imm(pc, flashMemory, registers);
+                break;
+            case 0x05:
+                mavis::instructions::add_reg(pc, flashMemory, registers);
+                break;
+            case 0x06:
+                mavis::instructions::add_imm(pc, flashMemory, registers);
+                break;
         }
         if (verbose_mode_set) {std::println("[{:%T}]: We are logging multiple things each cycle!", std::chrono::system_clock::now());} // Maybe add more flags to kinda choose which "level" of logging you want
     }
+
+    if (verbose_mode_set) {std::println("Total time taken for the main loop to execute: [{:%T}]", (std::chrono::system_clock::now() - time_at_beginning_program));}
 
     return 0;
 }

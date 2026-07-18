@@ -42,7 +42,7 @@ namespace mavis::instructions {
             pc += 3;
         }
 
-        std::println("je called, addr {}, register {}", addrToJmpTo, registers[0xF1]);
+        std::println("je called, addr {}, zero_flag_value {}", addrToJmpTo, registers[0xF1]);
 
     }
 
@@ -52,6 +52,8 @@ namespace mavis::instructions {
 
         pc += 3;
 
+        std::println("mov_reg called!");
+
     }
 
     void mov_imm(size_t& pc, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers) {
@@ -59,6 +61,8 @@ namespace mavis::instructions {
         registers[program[pc+1]] = grabAddrOrImm(pc, program, 1);
 
         pc += 4;
+
+        std::println("mov_imm called!");
 
     }
 
@@ -74,6 +78,8 @@ namespace mavis::instructions {
 
         pc += 3;
 
+        std::println("add_reg called!");
+
     }
 
     void add_imm(size_t& pc, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers) {
@@ -87,6 +93,8 @@ namespace mavis::instructions {
         }
 
         pc += 4;
+
+        std::println("mov_imm called!");
 
     }
 
