@@ -3,15 +3,15 @@
 * SP -> 0xA0: Stack pointer 
 * PC -> 0xF0: Program counter
 
+## Flags (in the ^^ reg area):
+* zero_flag -> 0xF1: bit is set HIGH when CMP is true else bit is set LOW, things like JE use this flag
+* overflow_flag -> 0xF2: Bit is set when a mathematical function overflows
+
 ## Argument types:
 * REG: one of the registers
 * IMM: any 16-bit number
 * ADDR: any 16-bit address
 * REG_OR_IMM: anything that could either be a 16-bit number or a register
-
-## Flags:
-* zero_flag -> 0xF1: bit is set HIGH when CMP is true else bit is set LOW, things like JE use this flag
-* overflow_flag -> 0xF2: Bit is set when a mathematical function overflows
 
 ## Instructions: 
 * NOP -> 0x00: does nothing and goes to the next instruction

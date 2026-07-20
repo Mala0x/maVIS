@@ -98,4 +98,34 @@ namespace mavis::instructions {
 
     }
 
+    void cmp_reg(size_t& pc, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers) {
+
+        uint16_t arg0Register = registers[program[pc+1]];
+        uint16_t arg1Register = registers[program[pc+2]];
+
+        if (arg0Register == arg1Register) {
+            registers[0xF1] = 1;
+        } else {
+            registers[0xF1] = 0;
+        }
+
+        pc += 3;
+        
+    }
+    
+    void cmp_imm(size_t& pc, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers) {
+
+        uint16_t arg0Register = registers[pc+1];
+        uint16_t arg1Register = grabAddrOrImm(pc, program, 2);
+
+        if (arg0Register == arg1Register) {
+            registers[0xF1] = 1;
+        } else {
+            registers[0xF1] = 0;
+        }
+
+        pc += 5;
+
+    }
+
 }
