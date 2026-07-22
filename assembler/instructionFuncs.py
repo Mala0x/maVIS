@@ -51,8 +51,8 @@ class binFileWriter:
         self.outputBinFile.flush() # Flushing the buffer everytime might not be the strat when parsing bigger files... Gotta think about that one in a later version
 
     def __bytepack_imm(self, imm): # This helper function just checks if the IMM is in limits and if it is it bytepacks it so that it actually is a 16 bit mem number instead of 8 bits when < 255
-        imm = int(imm)
-        
+        imm = int(imm, 16)
+
         if imm < 0 or imm > 0xFFFF:
             print("Your IMM is to big or to small! This will result in this IMM being 0!")
             return 0
@@ -73,7 +73,7 @@ class binFileWriter:
     def je(self, argList):
         print(f"je, argList: {argList}")
         self.__write_to_file(0x02)
-        self.__write_to_file(argList[0])
+        self.__write_to_file(self.__bytepack_imm(argList[0]))
 
     def mov(self, argList):
         print(f"mov, argList: {argList}")

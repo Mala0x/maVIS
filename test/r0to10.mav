@@ -1,5 +1,6 @@
-mov R1, 10
-CMP R0, 10
-JE 0x08
+MOV R1, 0x0A
+CMP R0, 0x0A
+JE 0x13
 ADD R0, 1
 JMP 0x04
+NOP

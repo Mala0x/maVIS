@@ -74,9 +74,22 @@ int main(int argc, char* argv[]) {
             case 0x06:
                 mavis::instructions::add_imm(pc, flashMemory, registers);
                 break;
+            case 0x07:
+                mavis::instructions::cmp_reg(pc, flashMemory, registers);
+                break;
+            case 0x08:
+                mavis::instructions::cmp_imm(pc, flashMemory, registers);
+                break;
         }
+
         if (verbose_mode_set) {std::println("[{:%T}]: We are logging multiple things each cycle!", std::chrono::system_clock::now());} // Maybe add more flags to kinda choose which "level" of logging you want
     }
+
+    for (size_t i = 0; i <= 10; ++i) {
+            std::println("register{}: {}", 0x10*i, registers[0x10*i]);
+    }
+
+    std::println("zero_flag register: {}", registers[0xF1]);
 
     if (verbose_mode_set) {std::println("Total time taken for the main loop to execute: [{:%T}]", (std::chrono::system_clock::now() - time_at_beginning_program));}
 

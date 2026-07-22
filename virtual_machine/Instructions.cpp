@@ -29,7 +29,7 @@ namespace mavis::instructions {
 
         std::println("p1: 0x{:02x}, p2: 0x{:02x}, full: 0x{:04x}", program[pc+1], program[pc+2], bitshifted_args);
 
-        pc += 3;
+        pc = bitshifted_args;
     }
 
     void je(size_t& pc, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers) {
@@ -38,8 +38,10 @@ namespace mavis::instructions {
         
         if (registers[0xF1]) {
             pc = addrToJmpTo;
+            std::println("Jump is equal so we jump");
         } else {
             pc += 3;
+            std::println("The jump was not equal so we did not jump");
         }
 
         std::println("je called, addr {}, zero_flag_value {}", addrToJmpTo, registers[0xF1]);
@@ -59,6 +61,8 @@ namespace mavis::instructions {
     void mov_imm(size_t& pc, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers) {
 
         registers[program[pc+1]] = grabAddrOrImm(pc, program, 1);
+
+        std::println("mov_imm whatToMove: {} mov_imm whereToMove: {}", registers[program[pc+1]], program[pc+1]);
 
         pc += 4;
 
@@ -86,6 +90,8 @@ namespace mavis::instructions {
 
         uint32_t sum = static_cast<uint32_t>(registers[program[pc+1]]) + grabAddrOrImm(pc, program, 1);
 
+        std::println("p1: {}, p2: {}, sum: {}", (registers[program[pc+1]]), grabAddrOrImm(pc, program, 1), sum);
+
         if (sum > 0xFFFF) {
             std::println("Integer overflow detected!");
         } else {
@@ -94,7 +100,7 @@ namespace mavis::instructions {
 
         pc += 4;
 
-        std::println("mov_imm called!");
+        std::println("add_imm called!");
 
     }
 
@@ -115,16 +121,17 @@ namespace mavis::instructions {
     
     void cmp_imm(size_t& pc, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers) {
 
-        uint16_t arg0Register = registers[pc+1];
-        uint16_t arg1Register = grabAddrOrImm(pc, program, 2);
+        uint8_t arg0RegIndex = program[pc+1];
+        uint16_t arg0Register = registers[arg0RegIndex];
+        uint16_t arg1Immediate = grabAddrOrImm(pc, program, 1);
 
-        if (arg0Register == arg1Register) {
+        if (arg0Register == arg1Immediate) {
             registers[0xF1] = 1;
         } else {
             registers[0xF1] = 0;
         }
 
-        pc += 5;
+        pc += 4;
 
     }
 
