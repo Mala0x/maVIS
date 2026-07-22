@@ -14,7 +14,7 @@ JE jump_here <- This has to be substituted with the memory address of jump_here
 ADD R1, 1
 
 jump_here: <- This should never run by itself only by invocation
-    add 0x99, R9
+    MOV 0x99, R9
     syscall 5 // Example syscall for exiting with the code in register R9
 ```
 - How to implement?
@@ -32,4 +32,12 @@ Actually adding a kinda pre-processor stage like in c,c++ sounds like a good ide
 %macro arg0, arg1
 mov %arg0, 1
 cmp %arg0, %arg1
+%endmacro
 ```
+
+### What else to add
+* "syscalls"
+* Bitwise operations such as and, nor, xor, or, etc, etc
+* Other jumping options such as JL (jump if less) etc, etc
+* Seeing how I would want to implement subtraction
+* And some way to kinda print to the terminal (add characters to some kinda buffer, then flush and print the buffer when done ascii) but let's see how I would do that...
