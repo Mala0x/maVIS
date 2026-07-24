@@ -6,11 +6,13 @@ import sys
 # Local imports
 import instructionFuncs
 
+#Mhmm I think i should be able to add comments into the assembly code that should not be to difficult i think
+
 def readFile(fileName):
 
     if fileName.find(".mav") == -1:
         print("Your file does not have the correct file extension!")
-        return
+        exit(-1)
 
     try:
         file = open(fileName, "r")
@@ -29,13 +31,22 @@ def grabInstruction(sourceFile):
     except OSError:
         print("I cannot make the output bin file :(")
 
-    lineCount = 0 # This is so if there is an error I can say what line the error is on
+    lineCount = 0 # This is so if there is an error I can say what line the error is on (it is a bit inconsistent because it takes comments into account)
 
     fileHandler = instructionFuncs.binFileWriter(outputFile)
 
     for items in sourceFile:
         splitLines = items.split(" ")
         lineCount += 1
+        
+        if ';' in splitLines: # This is for removing inline and newline comments in the assembler language
+            indexOfComment = splitLines.index(';')
+            print(f"I've found a comment the idx of the comment in the array is at {indexOfComment} the array is {splitLines}")
+            splitLines = splitLines[:indexOfComment]
+            if len(splitLines) == 0:
+                return
+            print(f"I've found a comment the idx of the comment in the array is at {indexOfComment} the array is {splitLines}")
+        
         if splitLines[0] in fileHandler.instructionDict:
             if len(fileHandler.instructionDict[splitLines[0]]["args"]) == 0:
                 fileHandler.instructionDict[splitLines[0]]["handler"]()

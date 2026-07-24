@@ -36,8 +36,9 @@ cmp %arg0, %arg1
 ```
 
 ### What else to add
-* "syscalls"
+* "syscalls" (<-- This is a pretty big one and will be used in the following: sysc IMM so you have 2^16-1 possible syscalls xD)
 * Bitwise operations such as and, nor, xor, or, etc, etc
 * Other jumping options such as JL (jump if less) etc, etc
 * Seeing how I would want to implement subtraction
 * And some way to kinda print to the terminal (add characters to some kinda buffer, then flush and print the buffer when done ascii) but let's see how I would do that...
+* Add a way to have comments in the assembly (both inline and on a seperate newline)
