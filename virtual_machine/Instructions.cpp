@@ -135,4 +135,21 @@ namespace mavis::instructions {
 
     }
 
+    void sysc(size_t& pc, std::vector<uint8_t>& program) {
+
+        uint16_t whatSyscall = grabAddrOrImm(pc, program, 0);
+
+        switch (whatSyscall) {
+            case 0x001:
+                std::println("Syscall 0x001 called! Now I can abstract some really big bullshit away!");
+                break;
+            default:
+                std::println("The syscall number you tried to use is not implemented yet! Try again!");
+                break;
+        }
+
+        pc += 3;
+
+    }
+
 }

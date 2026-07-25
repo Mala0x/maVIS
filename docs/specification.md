@@ -23,6 +23,7 @@
 * ADD IMM -> 0x06: Another opcode for the imm version
 * CMP REG -> 0x07: compares a register to another register (arg0: REG, arg1 REG_OR_IMM)
 * CMP IMM -> 0x08: Another opcode for the imm version
+* SYSC -> 0x09: This executes some kind of "syscall" (These "syscalls" are mostly some function I might want that are really nice to have abstracted away) (arg0: IMM)
 
 ## Stuff that should be catched at compile time
 * Basic integer overflow things

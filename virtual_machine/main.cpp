@@ -80,6 +80,9 @@ int main(int argc, char* argv[]) {
             case 0x08:
                 mavis::instructions::cmp_imm(pc, flashMemory, registers);
                 break;
+            case 0x09:
+                mavis::instructions::sysc(pc, flashMemory);
+                break;
         }
 
         if (verbose_mode_set) {std::println("[{:%T}]: We are logging multiple things each cycle!", std::chrono::system_clock::now());} // Maybe add more flags to kinda choose which "level" of logging you want
