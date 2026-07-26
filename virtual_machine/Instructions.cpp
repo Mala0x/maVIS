@@ -2,6 +2,7 @@
 #include <array>
 #include <cstdint>
 #include <print>
+#include "BackendAPI.hpp"
 
 namespace {
 
@@ -137,14 +138,17 @@ namespace mavis::instructions {
 
     void sysc(size_t& pc, std::vector<uint8_t>& program) {
 
-        uint16_t whatSyscall = grabAddrOrImm(pc, program, 0);
+        uint16_t syscallNumber = grabAddrOrImm(pc, program, 0);
 
-        switch (whatSyscall) {
+        switch (syscallNumber) { // All syscalls should be completely documented correctly AND syscalls are setup using the different registers no data is parsed to them via arguments
             case 0x001:
-                std::println("Syscall 0x001 called! Now I can abstract some really big bullshit away!");
+                mavis::API::sysc0x0001(); // This is how every syscall will be implemented
+                break;
+            case 0x069:
+                std::println("Hihi haha xDiddy");
                 break;
             default:
-                std::println("The syscall number you tried to use is not implemented yet! Try again!");
+                std::println("The syscall number you tried to use is not implemented yet (or you just used the wrong number)! Try again!");
                 break;
         }
 
