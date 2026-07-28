@@ -65,7 +65,7 @@ def writeInstructionsToFile(splitLines, fileHandler, lineCount):
 
 def assemble(sourceFile): # Make this function more true to its name, this function has to many things it is supposed to be doing (and is actually doing)
 
-    # All these mappings are defined in the spec (../docs/specification.md)
+    # All the mappings are defined in the spec (../docs/specification.md)
 
     sourceFile = splitFile(sourceFile)
 

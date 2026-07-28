@@ -29,16 +29,35 @@ Actually adding a kinda pre-processor stage like in c,c++ sounds like a good ide
 
 - Macro's look like
 ```
-%macro arg0, arg1
-mov %arg0, 1
-cmp %arg0, %arg1
+%macroname arg0, arg1
+    mov %arg0, 1
+    cmp %arg0, %arg1
 %endmacro
+```
+- It would be used as follow
+
+```
+%addAndCompare arg0, arg1
+    MOV %arg0, %arg1
+    CMP %arg1, %arg0
+%endmacro
+
+@addAndCompare r0, 35
+
+; And this then in the assembler would expand into
+
+@addAndCompare r0, 35 goes to -->
+
+MOV r0, 35
+CMP 35, r0
+
+(Should be kinda obvious the only thing I am kinda on the fence about is the syntax but mhmm we'll see)
 ```
 
 ### What else to add
-* "syscalls" (<-- This is a pretty big one and will be used in the following: sysc IMM so you have 2^16-1 possible syscalls xD)
+* "syscalls" (<-- This is a pretty big one and will be used in the following: sysc IMM so you have 2^16-1 possible syscalls xD) [This has also been done (now I just need to think about what syscalls I actually want to implement)]
 * Bitwise operations such as and, nor, xor, or, etc, etc
 * Other jumping options such as JL (jump if less) etc, etc
 * Seeing how I would want to implement subtraction
 * And some way to kinda print to the terminal (add characters to some kinda buffer, then flush and print the buffer when done ascii) but let's see how I would do that...
-* Add a way to have comments in the assembly (both inline and on a seperate newline)
+* Add a way to have comments in the assembly (both inline and on a seperate newline) [This has been done (was easier then I initially thought lmao)]
