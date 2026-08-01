@@ -1,95 +1,65 @@
-# import sys
-
-# class Parser:
-    
-#     commandLineArguments = None
-    
-#     arguments: dict
-    
-#     def __init__(self, commandLineArguments) -> None:
-#         self.commandLineArguments = commandLineArguments
-        
-#         self.arguments = { # This is now a hard coded list but I will also add ways to add and delete your own custom commands so this can be used in other projects
-#             "UsageProgram": {
-#                 "commands": ["", " ", "\n", "\r"],
-#                 "output": "This is not how this program is meant to be used!",
-#                 "command": self.testingArgumentCommand
-#             },
-#             "Help": {
-#                 "commands": ["--h", "--help"],
-#                 "output": "--help or --h gives you the help command!",
-#                 "command": self.testingArgumentCommand
-#             }
-#         }
-    
-#     def testingArgumentCommand(self, argumentName):
-#         print(f"This is a test commando for the: {argumentName} argument!")
-        
-# if __name__ == "__main__":
-#     print("This is how you test the argument parser!")
-#     myParser = Parser(sys.argv)
-    
-#     for items in sys.argv:
-#         for arguments in myParser.arguments:
-#             if items in myParser.arguments[arguments]["commands"]:
-#                 myParser.arguments[arguments]["command"](f"{items}, {arguments}")
-
-"""
-The above implementation of a way to map command line arguments to actions takes using --h and --help and " " around 0.222 using the time command
-"""
-
-# import sys
-
-# class Parser:
-#     arguments = [["--help", "--h"], ["", " ", "\n", "\r"]]    
-    
-#     commands: list
-    
-#     outputs = ["This is the help function you can get here by just doing what you did!", "This is just because you gave me a newline"]
-    
-#     def __init__(self):
-#         self.commands = [self.testingArgumentCommand, self.testingArgumentCommand]
-    
-#     def testingArgumentCommand(self, argumentName):
-#         print(f"This is a test commando for the: {argumentName} argument!")
-        
-
-# if __name__ == "__main__":
-#     print("This is how you test the argument parser!")
-#     myParser = Parser()
-    
-#     for items in sys.argv:
-#         for idx, arguments in enumerate(myParser.arguments):
-#             if items in arguments:
-#                 myParser.commands[idx](items)
-                
-"""
-The above implementation takes around 0.227 seconds. Mhmmmm
-"""
-
 import sys
+from typing import Callable
 
 class Parser:
-    triggers: list = ["--h", "--help", "", " ", "\n", "\r"]
+    triggers: list[str]
     
-    commandos: dict
+    ANSI_CODES: list = ['\033[1m', '\033[0m'] # These codes are static / const so these can stay in this part of the class definition
+
+    BOLD_ANSI_CODE: str = ANSI_CODES[0]
+    END_ANSI_CODE: str = ANSI_CODES[1]
     
-    def __init__(self):
-        self.commandos = {
-            "--h": self.testingArgumentCommand,
-            "--help": self.testingArgumentCommand,
+    programVersion: str
+    
+    commandos: dict[str, Callable]
+    
+    description: dict[str, str]
+    
+    def __init__(self, version) -> None: # You have to do this otherwise you cannot bind functions from the class to the dictionary
+        self.triggers = ["--h", "--help", "--v", "--version"]
+        
+        self.description = { # These are the hardcoded values that I would want to see every program have
+            "--h": "This shows the help menu (same as --help)",
+            "--help": "This shows the help menu (same as --h)",
+            "--v": "This shows the version of the program being run",
+            "--version": "This shows the version of the program being run"
         }
-    
-    def testingArgumentCommand(self, argumentName):
-        print(argumentName)
+        
+        self.commandos = {
+            "--h": self.helpArgument,
+            "--help": self.helpArgument,
+            "--v": self.versionArgument,
+            "--version": self.versionArgument
+        }
+        
+        self.programVersion = str(version) # Force to set the version of the program (I will not force integer because version naming is different for differing projects)
+
+    def helpArgument(self) -> None: # Default command that shows the command + description combo
+        for k, v in self.description.items():
+            print(f"{self.BOLD_ANSI_CODE}{k}{self.END_ANSI_CODE}: {v}") # Sets the trigger to bold (thought that it would be a nice touch)
+            
+    def versionArgument(self) -> None:
+        print(f"The program version: {self.programVersion}")
+        
+    def addCommand(self, triggers: str | list, description: str, function: Callable[[], None]) -> None:
+        
+        if isinstance(triggers, list): # Check if the user parsed an array of triggers (this does force all these triggers to use the same function when used)
+            for trigger in triggers: # This is usefull for things like --h && --help (these do the same but having both is nice)
+                self.triggers.append(str(trigger))
+                self.description.update({trigger: description}) # This forces the same description on all the different triggers but this should be fine
+                self.commandos.update({trigger: function})
+        else: # For when the user only provided 1 trigger
+            self.triggers.append(str(triggers))
+            self.description.update({triggers: description})
+            self.commandos.update({triggers: function})
     
 if __name__ == "__main__":
     print("This is how you test the argument parser!")
-    myParser = Parser()
+    myParser = Parser(420)
     
     for items in sys.argv:
         if items in myParser.triggers:
-            myParser.commandos[items](items)
+            myParser.commandos[items]()
             
             
 """ 
@@ -99,7 +69,7 @@ redundent and stuff
 
 """
 Stuff to add:
-- Methods to add new triggers & commands 
+- Methods to add new triggers & commands (DONE) 
 - Methods to check the "nature" of a command like when parsing a file the options to make it check the file extension against some kinda set
 - Nice color things
 - And the rest I will figure out when I am not on the brink of falling asleep :)
