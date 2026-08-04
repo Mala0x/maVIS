@@ -1,5 +1,7 @@
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <vector>
@@ -17,25 +19,33 @@ size_t pc = 0; // This is the program counter AKA the pointer into memory where 
 
 bool verbose_mode_set = false; // This defaults to false because no one wants to be logging at default (I think atleast)
 
+void is_file_provided(int argc) { // sub this eventaully with my own argument parser but for now this is aight
+    if (argc < 2) {
+        std::println("No file was provided, quitting! Usage: ./program fileName.mabin");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void set_verbose_mode(std::string verbose_mode_string,bool *verbose_mode_flag) {
+    if (verbose_mode_string.compare("-v") == 0) {
+        *verbose_mode_flag = true;
+        std::println("Verbose mode is set to: {}", *verbose_mode_flag);
+    }
+}
+
 int main(int argc, char* argv[]) {
 
-    if (argc < 2) {
-        std::println("You did not provide any file to be ran! Quitting \n");
-        return -1;
-    }
+    is_file_provided(argc);
 
-    std::string verboseMode(argv[2]);
+    std::string verboseMode(argv[2]); // from char* towards a string object, gives better and safer string viewer options 
     
-    if (verboseMode.compare("-v") == 0) { // Check if we want to log to the console on each "cycle"!
-        verbose_mode_set = true;
-        std::println("Verbose mode is set to: {}", verbose_mode_set); // This stupid check will be substituted by an argument parser that I will eventually write
-    }
+    set_verbose_mode(verboseMode, &verbose_mode_set); // Again a simple error prone argument parser thing that eventaully will be replaced by my own parser
 
     std::string inputFile(argv[1]); // Converting from char* to std::string for getting easy and safe string viewing options
 
     size_t fileExtension = inputFile.find(".mabin");
 
-    mavis::fileHandler::isFileCorrectFormat(fileExtension);
+    mavis::fileHandler::isFileCorrectFormat(fileExtension); // Might make it so you only have to give the string and do not have to also do the size_t fileExtension thing
 
     auto fileOptional = mavis::fileHandler::openFile(inputFile);
 
@@ -101,7 +111,7 @@ int main(int argc, char* argv[]) {
         std::println("zero_flag register: {}", registers[0xF1]);
 
         std::println("Total time taken for the main loop to execute: [{:%T}]", (std::chrono::system_clock::now() - time_at_beginning_program));
-    }
+    }  
 
     return 0;
 }

@@ -61,3 +61,7 @@ CMP 35, r0
 * Seeing how I would want to implement subtraction
 * And some way to kinda print to the terminal (add characters to some kinda buffer, then flush and print the buffer when done ascii) but let's see how I would do that...
 * Add a way to have comments in the assembly (both inline and on a seperate newline) [This has been done (was easier then I initially thought lmao)]
+* Add SDL3 and that will be the default so I can eventually make my own kinda operating system and there will be a option to run the virtual machine in headless mode so that you do not have the window popping up constantly
+* Start thinking about and maybe even writing the specs for a higher level language
+* To kinda jump off the above one start thinking about writing a compiler for the higher level langauge 
+* Make the decision if I want to also make some intermediate representation or not (I do not think this is needed because this is mostly used for compiler backends that need to cross compile but my language only needs to be compiled down into a .mabin file and it can be run on my emulator)
