@@ -19,6 +19,8 @@ size_t pc = 0; // This is the program counter AKA the pointer into memory where 
 
 bool verbose_mode_set = false; // This defaults to false because no one wants to be logging at default (I think atleast)
 
+// I am just grabbing some core stuff from the main function and putting them into their own functions for better readability
+
 void is_file_provided(int argc) { // sub this eventaully with my own argument parser but for now this is aight
     if (argc < 2) {
         std::println("No file was provided, quitting! Usage: ./program fileName.mabin");
@@ -26,8 +28,11 @@ void is_file_provided(int argc) { // sub this eventaully with my own argument pa
     }
 }
 
-void set_verbose_mode(std::string verbose_mode_string,bool *verbose_mode_flag) {
-    if (verbose_mode_string.compare("-v") == 0) {
+void set_verbose_mode(char* verbose_mode_arg_flag, bool *verbose_mode_flag) {
+
+    std::string verbose_mode_flag_string(verbose_mode_arg_flag); // Moved the string in his own function so it destroys itself after checking because there is no need to keep it around the entire time the vm is running
+
+    if (verbose_mode_flag_string.compare("-v") == 0) {
         *verbose_mode_flag = true;
         std::println("Verbose mode is set to: {}", *verbose_mode_flag);
     }
@@ -36,16 +41,18 @@ void set_verbose_mode(std::string verbose_mode_string,bool *verbose_mode_flag) {
 int main(int argc, char* argv[]) {
 
     is_file_provided(argc);
-
-    std::string verboseMode(argv[2]); // from char* towards a string object, gives better and safer string viewer options 
     
-    set_verbose_mode(verboseMode, &verbose_mode_set); // Again a simple error prone argument parser thing that eventaully will be replaced by my own parser
+    set_verbose_mode(argv[2], &verbose_mode_set); // Again a simple error prone argument parser thing that eventaully will be replaced by my own parser
+
+    // Need to optimize this and move this all into the fileHandler
 
     std::string inputFile(argv[1]); // Converting from char* to std::string for getting easy and safe string viewing options
 
     size_t fileExtension = inputFile.find(".mabin");
 
     mavis::fileHandler::isFileCorrectFormat(fileExtension); // Might make it so you only have to give the string and do not have to also do the size_t fileExtension thing
+
+    // Need to optimize this and move this all into the fileHandler
 
     auto fileOptional = mavis::fileHandler::openFile(inputFile);
 
@@ -54,6 +61,8 @@ int main(int argc, char* argv[]) {
     mavis::fileHandler::isFileValid(fileOptional, maBinFile);
 
     size_t fileSize = mavis::fileHandler::getFileSize(maBinFile);
+
+    // Maybe check if we can combine the upper 4 function calls into just one function call to the outside and do all the validation inside the fileHandler 
 
     std::vector<uint8_t> flashMemory;
 
@@ -64,10 +73,10 @@ int main(int argc, char* argv[]) {
         flashMemory.emplace_back(maBinFile.get());
     }
 
-    auto time_at_beginning_program = std::chrono::system_clock::now();
+    std::chrono::time_point time_at_beginning_program = std::chrono::system_clock::now(); // This for now will always show TODO: eventually put this behind the verbose mode flag
 
     while (pc < fileSize) { // This is the big switch statement that is the heart of the entire program
-        switch (flashMemory.at(pc)) {
+        switch (flashMemory.at(pc)) { // Maybe move this into its own like loop() function so the int main function stays clean but that might induce a big headache
             case 0x00:
                 mavis::instructions::nop(pc);
                 break;
