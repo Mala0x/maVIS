@@ -1,0 +1,3 @@
+NOP ; This is a nop call and the rest after the comment sign should be ignored by the compiler
+ADD R0, 3 ; This is another comment
+; This is a newline comment and should also be ignored and not be counted towards the linecount for error handling
