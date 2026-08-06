@@ -54,6 +54,22 @@ CMP 35, r0
 (Should be kinda obvious the only thing I am kinda on the fence about is the syntax but mhmm we'll see)
 ```
 
+# Stuff I have to do in the rewrite
+* Refactor both the python and c++ code to use the same coding style across everything
+* Make the folders better rename it to src/ instead of virtual_machine/
+* Folder everything up for a better project overview
+* Finish writing both the argument parser & the test suite in both python and c++
+* Start thinking about the high level language that is going to compile down into bytecode that compiles down into machine code
+* Start writing the compiler for the language in rust maybe (I want to learn rust and that seems like a fun way to actually start writing some rust code)
+* Introduce SDL3 into the project en the build process and think about how I would implement that into the entire project
+  * the sdl window will by default show but can be disabled using --headless
+  * the sdl window will refresh at a fixed 60hz by default, vsync or other refresh rates could be implemented without much frictions
+
+* Adapt the bytecode to the high level language and add and subtract as needed
+
+* **The ultimate test:** Write a program that loads a bitmap into a framebuffer and shows it on the sdl3 window
+
+
 ### What else to add
 * "syscalls" (<-- This is a pretty big one and will be used in the following: sysc IMM so you have 2^16-1 possible syscalls xD) [This has also been done (now I just need to think about what syscalls I actually want to implement)]
 * Bitwise operations such as and, nor, xor, or, etc, etc
