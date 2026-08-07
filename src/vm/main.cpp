@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
                 mavis::instructions::cmp_imm(program_counter, flash_memory, registers);
                 break;
             case 0x09:
-                mavis::instructions::sysc(program_counter, flash_memory);
+                mavis::instructions::sysc(program_counter, flash_memory, registers);
                 break;
         }
 

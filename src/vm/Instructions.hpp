@@ -14,5 +14,5 @@ namespace mavis::instructions {
     void add_imm(size_t& program_counter, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers);
     void cmp_reg(size_t& program_counter, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers);
     void cmp_imm(size_t& program_counter, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers);
-    void sysc(size_t& program_counter, std::vector<uint8_t>& program);
+    void sysc(size_t& program_counter, std::vector<uint8_t>& program, std::array<uint16_t, 0xFF>& registers);
 }

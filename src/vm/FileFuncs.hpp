@@ -7,10 +7,9 @@
 #include <vector>
 
 namespace mavis::fileHandler {
-    std::optional<std::fstream> openFile(std::string fileName);
-    size_t getFileSize(std::fstream& maBinFile);
-    void isFileValid(std::optional<std::fstream>& fileOptional ,std::fstream& maBinFile);
-    void isFileCorrectFormat(size_t fileExtension);
+    std::optional<std::fstream> open_file(std::string fileName);
+    size_t get_file_size(std::fstream& maBinFile);
+    void is_file_valid(std::optional<std::fstream>& fileOptional ,std::fstream& maBinFile);
+    void is_file_correct_format(size_t fileExtension);
     void place_file_in_flash_memory(char* input_file_argv, std::vector<uint8_t> *flash_memory);
-
 }

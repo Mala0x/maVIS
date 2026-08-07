@@ -66,18 +66,33 @@ CMP 35, r0
   * the sdl window will refresh at a fixed 60hz by default, vsync or other refresh rates could be implemented without much frictions
 
 * Adapt the bytecode to the high level language and add and subtract as needed
+* In the c++ code make every argument that can be null a *arg and something that cannot be null &arg so the function def kinda tells what is to be expected
+* Make error messages in both python & c++ better / handle errors in a better way
+* Make verbose mode actually worth it to turn it on
 
 * **The ultimate test:** Write a program that loads a bitmap into a framebuffer and shows it on the sdl3 window
 
+## Why this big rewrite?
+I honestly want this project to be on this baseline before doing other things. All these problems are to small to make their own issues and branches for
+but all these issues combined just make it so that I do not have a nice baseline to work from and to iterate from. So I want to have this one issue + branch
+that is kinda big to just make the entire baseline and after that the rest will be better organized into their own issues + branches.
+This also means that the issues and stuff that is going to be added afterwards is going to be way bigger + better
 
 ### What else to add
 * "syscalls" (<-- This is a pretty big one and will be used in the following: sysc IMM so you have 2^16-1 possible syscalls xD) [This has also been done (now I just need to think about what syscalls I actually want to implement)]
 * Bitwise operations such as and, nor, xor, or, etc, etc
 * Other jumping options such as JL (jump if less) etc, etc
 * Seeing how I would want to implement subtraction
-* And some way to kinda print to the terminal (add characters to some kinda buffer, then flush and print the buffer when done ascii) but let's see how I would do that...
+* And some way to kinda print to the terminal (add characters to some kinda buffer, then flush and print the buffer when done ascii) but let's see how I would do that... (done)
 * Add a way to have comments in the assembly (both inline and on a seperate newline) [This has been done (was easier then I initially thought lmao)]
 * Add SDL3 and that will be the default so I can eventually make my own kinda operating system and there will be a option to run the virtual machine in headless mode so that you do not have the window popping up constantly
 * Start thinking about and maybe even writing the specs for a higher level language
 * To kinda jump off the above one start thinking about writing a compiler for the higher level langauge 
 * Make the decision if I want to also make some intermediate representation or not (I do not think this is needed because this is mostly used for compiler backends that need to cross compile but my language only needs to be compiled down into a .mabin file and it can be run on my emulator)
+
+## When to add what?
+* Expand machine language
+  * Add bitwise operations
+  * Think about more syscalls
+  * Think about math things (like multiplying)
+* 
