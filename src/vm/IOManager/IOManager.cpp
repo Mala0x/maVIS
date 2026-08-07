@@ -1,0 +1,1 @@
+// This manages everything to do with Input/Ouput think like file handling, printing to the terminal either for logging or just a syscall and eventually handle the sdl3 frontend

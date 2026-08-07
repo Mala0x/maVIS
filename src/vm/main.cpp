@@ -15,8 +15,6 @@
 // I do also get the feeling I might need to start writing my own argument parser for the cpp virtual machine side of this project
 // I do have multiple things I want the user to be able to configure before starting the execution of said program
 
-size_t program_counter = 0; // This is the program counter AKA the pointer into memory where we are atm
-
 bool verbose_mode_set = false; // This defaults to false because no one wants to be logging at default (I think atleast)
 
 // I am just grabbing some core stuff from the main function and putting them into their own functions for better readability
@@ -48,6 +46,41 @@ void check_command_line_args(int argc, char *verbose_mode_arg_flag, bool *verbos
     set_verbose_mode(verbose_mode_arg_flag, verbose_mode_flag);
 }
 
+void main_switch_loop(std::vector<uint8_t> flash_memory, std::array<uint16_t, 0xFF>& registers, size_t& program_counter) { // Might need to change flash_memory to a const * because the source file should be immutable
+    switch (flash_memory.at(program_counter)) { // Maybe move this into its own like loop() function so the int main function stays clean but that might induce a big headache
+                case 0x00:
+                    mavis::instructions::nop(program_counter);
+                    break;
+                case 0x01:
+                    mavis::instructions::jmp(program_counter, flash_memory);
+                    break;
+                case 0x02:
+                    mavis::instructions::je(program_counter, flash_memory, registers);
+                    break;
+                case 0x03:
+                    mavis::instructions::mov_reg(program_counter, flash_memory, registers);
+                    break;
+                case 0x04:
+                    mavis::instructions::mov_imm(program_counter, flash_memory, registers);
+                    break;
+                case 0x05:
+                    mavis::instructions::add_reg(program_counter, flash_memory, registers);
+                    break;
+                case 0x06:
+                    mavis::instructions::add_imm(program_counter, flash_memory, registers);
+                    break;
+                case 0x07:
+                    mavis::instructions::cmp_reg(program_counter, flash_memory, registers);
+                    break;
+                case 0x08:
+                    mavis::instructions::cmp_imm(program_counter, flash_memory, registers);
+                    break;
+                case 0x09:
+                    mavis::instructions::sysc(program_counter, flash_memory, registers);
+                    break;
+            }
+}
+
 int main(int argc, char* argv[]) {
 
     check_command_line_args(argc, argv[2], &verbose_mode_set); // These kinda multifunctions should be the only (or atleast) as least as possible publicly facing functions
@@ -61,43 +94,15 @@ int main(int argc, char* argv[]) {
 
     std::optional<std::chrono::system_clock::time_point> time_at_beginning_program; // Make this an optional because otherwise you assign a good amount of space for something that is never used
 
+    size_t program_counter = 0; // Always ofc start at address 0
+
     if (verbose_mode_set) {
         time_at_beginning_program = std::chrono::system_clock::now();
     }
 
     while (program_counter < flash_memory.size()) { // This is the big switch statement that is the heart of the entire program
-        switch (flash_memory.at(program_counter)) { // Maybe move this into its own like loop() function so the int main function stays clean but that might induce a big headache
-            case 0x00:
-                mavis::instructions::nop(program_counter);
-                break;
-            case 0x01:
-                mavis::instructions::jmp(program_counter, flash_memory);
-                break;
-            case 0x02:
-                mavis::instructions::je(program_counter, flash_memory, registers);
-                break;
-            case 0x03:
-                mavis::instructions::mov_reg(program_counter, flash_memory, registers);
-                break;
-            case 0x04:
-                mavis::instructions::mov_imm(program_counter, flash_memory, registers);
-                break;
-            case 0x05:
-                mavis::instructions::add_reg(program_counter, flash_memory, registers);
-                break;
-            case 0x06:
-                mavis::instructions::add_imm(program_counter, flash_memory, registers);
-                break;
-            case 0x07:
-                mavis::instructions::cmp_reg(program_counter, flash_memory, registers);
-                break;
-            case 0x08:
-                mavis::instructions::cmp_imm(program_counter, flash_memory, registers);
-                break;
-            case 0x09:
-                mavis::instructions::sysc(program_counter, flash_memory, registers);
-                break;
-        }
+
+        main_switch_loop(flash_memory, registers, program_counter);
 
         if (verbose_mode_set) {std::println("[{:%T}]: Something has happened and I logged it :) (This ofc should become better and actually give usefull information)", std::chrono::system_clock::now());} // Maybe add more flags to kinda choose which "level" of logging you want
     }

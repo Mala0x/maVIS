@@ -1,0 +1,1 @@
+// This will handle everything needed for debugging / verbose mode output so that you can actually develop without going insane

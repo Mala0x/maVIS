@@ -11,7 +11,7 @@ namespace mavis::API {
 
     void sysc_0x0002() { // syscall for printing the string buffer to the terminal and flushing the buffer
         
-        if (string_buffer.size() > 0) { // When buffer is empty DO NOT PRINT BAD BAD will happen
+        if (string_buffer.size() > 0) { // When buffer is empty DO NOT PRINT BAD BAD will happen (I think)
             std::println("{}", string_buffer.data());
             string_buffer.clear();
         } else {
