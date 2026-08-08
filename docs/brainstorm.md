@@ -55,6 +55,7 @@ CMP 35, r0
 ```
 
 # Stuff I have to do in the rewrite
+* Encapsulate everything into classes for better readibility and for a better sanity off myself <-- Make like 3 or 4 classes and make the main.cpp clean as hell
 * Refactor both the python and c++ code to use the same coding style across everything
 * Make the folders better rename it to src/ instead of virtual_machine/
 * Folder everything up for a better project overview

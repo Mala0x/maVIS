@@ -1,1 +1,0 @@
-// This handles everything with loading the file into the array and then deallocating but this also handles the loading of bitmaps when needed
