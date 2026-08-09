@@ -8,4 +8,5 @@ struct Config {
     bool debug_mode_set = false;
     bool logging_to_file_set = false;
     std::string file_to_log_to = "./log.log";
+    std::string mabin_file;
 };
