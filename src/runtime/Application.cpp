@@ -2,23 +2,25 @@
 
 #include <print>
 
-void Application::init(int argc, char* argv[]) {
-    this->arguments = new Arguments(argc, argv, this->application_config);
+void Application::init(int argc, char *argv[]) {
+  this->arguments = new Arguments(argc, argv, this->application_config);
 
-    this->file = new File(this->application_config);
+  this->file = new File(this->application_config);
 
-    this->core = new Core(this->file->vector);
+  this->window = new Window();
 
-    std::println("verbose mode set: {}", this->application_config.verbose_mode_set);
+  this->core = new Core(this->file->vector);
+
+  std::println("verbose mode set: {}",
+               this->application_config.verbose_mode_set);
 }
 
-void Application::loop() {
-    core->delegation();
-}
+void Application::loop() { core->delegation(); }
 
 Application::~Application() {
-    delete this->arguments;
-    delete this->file;
-    delete this->core;
-    std::println("The heap allocated arguments where deleted!");
+  delete this->arguments;
+  delete this->file;
+  delete this->window;
+  delete this->core;
+  std::println("The heap allocated arguments where deleted!");
 }
