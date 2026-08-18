@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "../../Common/Config.h"
+#include "../../Common/Config.hpp"
 
 class Arguments {
     private:

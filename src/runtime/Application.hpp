@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common/Config.h"
+#include "Common/Config.hpp"
 #include "Core/Core.hpp"
 #include "IO/Arguments/Arguments.hpp"
 #include "IO/File/File.hpp"

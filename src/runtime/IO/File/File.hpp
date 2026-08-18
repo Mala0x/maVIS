@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Common/Config.h"
+#include "../../Common/Config.hpp"
 
 #include <fstream>
 #include <vector>
