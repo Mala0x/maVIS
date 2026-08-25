@@ -8,7 +8,7 @@ MAKEFLAGS += -j$(NPROCS)
 
 CXX      := clang++
 CXXFLAGS := -std=c++23 -Wall -Wextra -Werror -MMD -MP
-LDLIBS   := -lSDL3
+LDLIBS   := -lSDL3 -lSDL3_ttf
 TARGET   := maVM.out
 
 # 1. Directory Isolation Setup

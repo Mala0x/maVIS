@@ -4,12 +4,12 @@
 #include <cstdlib>
 
 void Core::nop() {
-    std::println("NOP CALLED!");
+    //std::println("NOP CALLED!");
     this->program_counter += 1;
 }
 
 void Core::jmp() {
-    std::println("JMP CALLED!");
+    //std::println("JMP CALLED!");
 
     uint16_t addr = this->grab_addr_or_imm(0);
 
